@@ -54,6 +54,12 @@ public class PresupuestosController : Controller
     {
         return View(IdPresupuesto);
     }
+    [HttpPost]
+    public IActionResult DeleteC(int IdPresupuesto)
+    {
+        presupuestoRepository.Eliminar(IdPresupuesto);
+        return RedirectToAction("index");
+    }
 
 
 }
