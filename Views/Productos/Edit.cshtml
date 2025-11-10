@@ -1,0 +1,21 @@
+@model Producto;
+
+<main class="text-center">
+    <h1 class="display-4">Modificar Producto</h1>
+    <h3>Id Producto: @Model.IdProducto</h3>
+    <h3>Precio: @Model.Precio</h3>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="IdProducto" />
+
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="form-label"></label>
+            <input asp-for="Descripcion" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar cambios</button>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+
+    </form>
+
+</main>

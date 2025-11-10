@@ -1,0 +1,63 @@
+@using System.Linq
+@{
+    ViewData["Title"] = "Detalle de Presupuesto";
+}
+
+<main class="text-center">
+    <h1 class="display-4">Detalle de Presupuesto</h1>
+    <h2>Listado de Presupuestos</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Destinatario</th>
+                <th>Fecha</th>
+                <th>Productos</th>
+            </tr>
+        </thead>
+        <tbody>
+@foreach (var p in Model)
+{
+                <tr>
+                    <td>@p.IdPresupuesto</td>
+                    <td>@p.NombreDestinatario</td>
+                    <td>@p.FechaCreacion.ToShortDateString()</td>
+                    <td>
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID Producto</th>
+                                <th>Descripcion</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                <tbody>
+                @{
+                    double total = 0;
+                }
+                @foreach (var d in p.Detalle)
+                {
+                    <tr>
+                        <td>@d.Producto.IdProducto </td>
+                        <td>@d.Producto.Descripcion</td>
+                        <td>@d.Cantidad</td>
+                        <td>@d.Producto.Precio</td>
+                        @{
+                            total += d.Cantidad * d.Producto.Precio;
+                        }
+                    </tr>
+                    
+                }
+            </tbody>
+        </table>
+                        <p><b>Total Presupuesto</b> $@total</p>
+    </td>
+        
+    </tr>
+}
+
+            </tbody>
+    </table>
+    </main>
