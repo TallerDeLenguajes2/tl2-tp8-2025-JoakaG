@@ -17,47 +17,18 @@
             </tr>
         </thead>
         <tbody>
-@foreach (var p in Model)
-{
-                <tr>
-                    <td>@p.IdPresupuesto</td>
-                    <td>@p.NombreDestinatario</td>
-                    <td>@p.FechaCreacion.ToShortDateString()</td>
-                    <td>
-                    <table class="table table-sm table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID Producto</th>
-                                <th>Descripcion</th>
-                                <th>Cantidad</th>
-                                <th>Precio</th>
-                            </tr>
-                        </thead>
-                <tbody>
-                @{
-                    double total = 0;
-                }
-                @foreach (var d in p.Detalle)
+            @foreach (var p in Model)
                 {
                     <tr>
-                        <td>@d.Producto.IdProducto </td>
-                        <td>@d.Producto.Descripcion</td>
-                        <td>@d.Cantidad</td>
-                        <td>@d.Producto.Precio</td>
-                        @{
-                            total += d.Cantidad * d.Producto.Precio;
-                        }
+                        <td>@p.IdPresupuesto</td>
+                        <td>@p.NombreDestinatario</td>
+                        <td>@p.FechaCreacion.ToShortDateString()</td>
+                        <td>
+                            <a asp-controller="Presupuestos" asp-action="Details" asp-route-id="@p.IdPresupuesto"  class="btn btn-secondary">Detalles</a>
+                            <a asp-controller="Presupuestos" asp-action="Delete" asp-route-IdPresupuesto="@p.IdPresupuesto"  class="btn btn-danger">Eliminar</a>
+                        </td>
                     </tr>
-                    
                 }
-            </tbody>
-        </table>
-                        <p><b>Total Presupuesto</b> $@total</p>
-    </td>
-        
-    </tr>
-}
-
-            </tbody>
+        </tbody>
     </table>
     </main>

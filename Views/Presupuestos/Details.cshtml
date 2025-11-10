@@ -1,0 +1,40 @@
+@model Presupuesto
+<main class="text-center">
+    <h1 class="display-4">Detalle de Presupuesto</h1>
+    <h2>Detalle de Presupuesto</h2>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>ID Producto</th>
+                <th>Descripcion</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th><a asp-action="AgregarP" asp-controller="Presupuestos" asp-route-idPresupuesto="@Model.IdPresupuesto"  class="btn btn-success">+ Agregar</a></th> @* Preguntar lo de viewData...*@
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                double total = 0;
+            }
+            @foreach (var d in Model.Detalle)
+            {
+                <tr>
+                    <td>@d.Producto.IdProducto </td>
+                    <td>@d.Producto.Descripcion</td>
+                    <td>@d.Cantidad</td>
+                    <td>@d.Producto.Precio</td>
+                    <td>
+                        <a class="btn btn-danger">X</a>
+                    </td>
+                    @{
+                        total += d.Cantidad * d.Producto.Precio;
+                    }
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    <p><b>Total Presupuesto</b> $@total</p>
+    <a asp-controller="Presupuestos" asp-action="index" class="btn btn-secondary">Volver</a>
+
+</main>

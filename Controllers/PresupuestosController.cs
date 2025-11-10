@@ -17,13 +17,43 @@ public class PresupuestosController : Controller
 
     public IActionResult Details(int id)
     {
+        var detalles = presupuestoRepository.ObtenerDetalle(id);
         var presupuesto = presupuestoRepository.Listar()
-            .FirstOrDefault(p => p.IdPresupuesto == id);
-
+                          .FirstOrDefault(p => p.IdPresupuesto == id);
         if (presupuesto == null)
+        {
             return NotFound();
-
+        }
+        presupuesto.Detalle = detalles;
         return View(presupuesto);
     }
+
+
+
+
+    [HttpPost]
+    public IActionResult Create(Presupuesto presupuesto)
+    {
+        presupuestoRepository.Crear(presupuesto);
+        return RedirectToAction("Presupuestos/presupuesto");
+    }
+    [HttpGet]
+    public IActionResult AgregarP(int idPresupuesto)
+    {
+        return View(idPresupuesto);
+    }
+
+    [HttpPost]
+    public IActionResult AgregarP(int idPresupuesto, int idProducto, int cantidad)
+    {
+        presupuestoRepository.agregarProductoAPresupuesto(idPresupuesto, idProducto, cantidad);
+        return RedirectToAction("index");
+    }
+    [HttpGet]
+    public IActionResult Delete(int IdPresupuesto)
+    {
+        return View(IdPresupuesto);
+    }
+
 
 }
