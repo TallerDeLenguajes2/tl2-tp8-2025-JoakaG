@@ -106,7 +106,7 @@ public class PresupuestoRepository
             connection.Close();
             return chi > 0;
         }
-        }
+    }
 
     public bool Eliminar(int id)
     {
@@ -122,6 +122,21 @@ public class PresupuestoRepository
             // borro presupuesto desp por la FK 
             SqliteCommand command = new SqliteCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", id);
+            int exito = command.ExecuteNonQuery();
+            connection.Close();
+            return exito > 0;
+        }
+    }
+
+    public bool EliminarProductoDetalle(int IdPresupuesto, int IdProducto)
+    {
+        var queryString = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @id AND idProducto = @IdProducto;";
+        using (SqliteConnection connection = new SqliteConnection(cadenaConexion))
+        {
+            connection.Open();
+            SqliteCommand command = new SqliteCommand(queryString, connection);
+            command.Parameters.AddWithValue("@idProducto", IdProducto);
+            command.Parameters.AddWithValue("@idPesupuesto", IdPresupuesto);
             int exito = command.ExecuteNonQuery();
             connection.Close();
             return exito > 0;

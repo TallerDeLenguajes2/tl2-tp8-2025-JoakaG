@@ -61,5 +61,15 @@ public class PresupuestosController : Controller
         return RedirectToAction("index");
     }
 
+    //     public IActionResult DeleteP(int IdPresupuesto)
+    // {
+    //     return View(IdPresupuesto);
+    // }
+    // [HttpPost]
+    // public IActionResult DeletePC(int IdPresupuesto, int IdProducto)
+    // {
+    //     presupuestoRepository.EliminarProductoDetalle(IdPresupuesto, IdProducto);
+    //     return RedirectToAction("index");
+    // }
 
 }

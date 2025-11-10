@@ -13,9 +13,6 @@
             </tr>
         </thead>
         <tbody>
-            @{
-                double total = 0;
-            }
             @foreach (var d in Model.Detalle)
             {
                 <tr>
@@ -26,15 +23,13 @@
                     <td>
                         <a class="btn btn-danger">X</a>
                     </td>
-                    @{
-                        total += d.Cantidad * d.Producto.Precio;
-                    }
                 </tr>
 
             }
         </tbody>
     </table>
-    <p><b>Total Presupuesto</b> $@total</p>
+    <p><b>Total Presupuesto sin IVA: </b> $@Model.MontoPresupuesto()</p>
+     <p><b>Total Presupuesto con IVA: </b> $@Model.MontoPresupuestoConIva()</p>
     <a asp-controller="Presupuestos" asp-action="index" class="btn btn-secondary">Volver</a>
 
 </main>
