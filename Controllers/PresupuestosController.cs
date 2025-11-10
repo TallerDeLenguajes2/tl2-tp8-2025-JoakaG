@@ -28,14 +28,18 @@ public class PresupuestosController : Controller
         return View(presupuesto);
     }
 
-
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     [HttpPost]
     public IActionResult Create(Presupuesto presupuesto)
     {
         presupuestoRepository.Crear(presupuesto);
-        return RedirectToAction("Presupuestos/presupuesto");
+        return RedirectToAction("index");
     }
     [HttpGet]
     public IActionResult AgregarP(int idPresupuesto)

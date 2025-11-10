@@ -10,6 +10,11 @@ public class Presupuesto
     public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
     public List<PresupuestoDetalle> Detalle { get => detalle; set => detalle = value; }
 
+
+    public Presupuesto()
+    {
+        Detalle = new List<PresupuestoDetalle>();
+    }
     public double MontoPresupuesto()
     {
         double monto = 0;
@@ -28,7 +33,7 @@ public class Presupuesto
     } //considerar iva 21
     public int CantidadProductos()
     {
-         int cant = 0;
+        int cant = 0;
 
         foreach (var detalleProducto in detalle)
         {
