@@ -10,7 +10,6 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Destinatario</th>
                 <th>Fecha</th>
                 <th><a asp-controller="Presupuestos" asp-action="Create" class="btn btn-success">+ Agregar</a></th>
@@ -20,7 +19,6 @@
             @foreach (var p in Model)
                 {
                     <tr>
-                        <td>@p.IdPresupuesto</td>
                         <td>@p.NombreDestinatario</td>
                         <td>@p.FechaCreacion.ToShortDateString()</td>
                         <td>

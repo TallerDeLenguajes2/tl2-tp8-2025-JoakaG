@@ -27,9 +27,9 @@ public class ProductosController : Controller
 
         if (producto == null)
             return NotFound();
-
-        return View(producto);
-    }
+        var prodViewModel = new ProductoViewModel(producto.Descripcion, producto.IdProducto);
+        return View(prodViewModel);
+    } 
     [HttpGet]
     public IActionResult Create()
     {
@@ -48,9 +48,9 @@ public class ProductosController : Controller
         return View(producto);
     }
     [HttpPost]
-    public IActionResult Edit(int id, string descripcion)
+    public IActionResult Edit(ProductoViewModel pvw)
     {
-        productoRepository.ModificarProducto(id, descripcion);
+        productoRepository.ModificarProducto(pvw.Id, pvw.Descripcion);
         return RedirectToAction("Index");
     }
     [HttpGet]

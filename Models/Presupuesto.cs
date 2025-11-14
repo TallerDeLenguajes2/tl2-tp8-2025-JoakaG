@@ -30,7 +30,7 @@ public class Presupuesto
     public double MontoPresupuestoConIva()
     {
         return MontoPresupuesto() * 1.21;
-    } //considerar iva 21
+    } 
     public int CantidadProductos()
     {
         int cant = 0;
