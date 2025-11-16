@@ -4,7 +4,7 @@ using tl2_tp8_2025_JoakaG.Models;
 public class PresupuestosController : Controller
 {
 
-    private PresupuestoRepository presupuestoRepository;
+    private readonly PresupuestoRepository presupuestoRepository;
     public PresupuestosController()
     {
         presupuestoRepository = new PresupuestoRepository();
@@ -36,8 +36,13 @@ public class PresupuestosController : Controller
 
 
     [HttpPost]
-    public IActionResult Create(Presupuesto presupuesto)
+    public IActionResult Create(PresupuestoViewModel vwm)
     {
+        var presupuesto = new Presupuesto();
+        presupuesto.IdPresupuesto = vwm.IdPresupuesto;
+        presupuesto.NombreDestinatario = vwm.NombreDestinatario;
+        //VALIDAR FECHA
+        presupuesto.FechaCreacion = vwm.FechaCreacion;
         presupuestoRepository.Crear(presupuesto);
         return RedirectToAction("index");
     }
@@ -48,9 +53,9 @@ public class PresupuestosController : Controller
     }
 
     [HttpPost]
-    public IActionResult AgregarP(int idPresupuesto, int idProducto, int cantidad)
+    public IActionResult AgregarP(AgregarProductoViewModel vwm)
     {
-        presupuestoRepository.agregarProductoAPresupuesto(idPresupuesto, idProducto, cantidad);
+        presupuestoRepository.agregarProductoAPresupuesto(vwm.IdPresupuesto, vwm.IdProducto, vwm.Cantidad);
         return RedirectToAction("index");
     }
     [HttpGet]

@@ -5,7 +5,7 @@ using tl2_tp8_2025_JoakaG.Models;
 public class ProductosController : Controller
 {
 
-    private ProductoRepository productoRepository;
+    private readonly ProductoRepository productoRepository;
     public ProductosController()
     {
         productoRepository = new ProductoRepository();
@@ -21,23 +21,30 @@ public class ProductosController : Controller
         return View();
     }
 
-    public IActionResult Details(int id)
-    {
-        var producto = productoRepository.Listar().FirstOrDefault(p => p.IdProducto == id);
+    // public IActionResult Details(int id)
+    // {
+    //     var producto = productoRepository.Listar().FirstOrDefault(p => p.IdProducto == id);
 
-        if (producto == null)
-            return NotFound();
-        var prodViewModel = new ProductoViewModel(producto.Descripcion, producto.IdProducto);
-        return View(prodViewModel);
-    } 
+    //     if (producto == null)
+    //         return NotFound();
+    //     var prodViewModel = new ProductoViewModel(producto.Descripcion, producto.IdProducto);
+    //     return View(prodViewModel);
+    // } 
     [HttpGet]
     public IActionResult Create()
     {
         return View();
     }
     [HttpPost]
-    public IActionResult Create(Producto nuevoProducto)
+    public IActionResult Create(ProductoViewModel vwm)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(vwm);
+        }
+        var nuevoProducto = new Producto();
+        nuevoProducto.Precio = vwm.Precio;
+        nuevoProducto.Descripcion = vwm.Descripcion;
         productoRepository.Crear(nuevoProducto);
         return RedirectToAction("Index");
     }
@@ -45,12 +52,24 @@ public class ProductosController : Controller
     public IActionResult Edit(int id)
     {
         var producto = productoRepository.ObtenerDetalle(id);
-        return View(producto);
+        if (producto.IdProducto != id) 
+            return NotFound();
+
+        var vwmProducto = new ProductoViewModel(producto.Descripcion, producto.IdProducto, producto.Precio);
+        
+        return View(vwmProducto);
     }
     [HttpPost]
-    public IActionResult Edit(ProductoViewModel pvw)
+    public IActionResult Edit(int id, ProductoViewModel pvw)
     {
-        productoRepository.ModificarProducto(pvw.Id, pvw.Descripcion);
+        if (pvw.IdProducto != id) return NotFound();
+
+        if (!ModelState.IsValid)
+        {
+            return View(pvw);
+        }
+
+        productoRepository.ModificarProducto(pvw.IdProducto, pvw.Descripcion, pvw.Precio);
         return RedirectToAction("Index");
     }
     [HttpGet]

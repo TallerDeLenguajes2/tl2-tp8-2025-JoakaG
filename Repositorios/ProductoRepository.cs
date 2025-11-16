@@ -43,15 +43,16 @@ public class ProductoRepository : IRepository<Producto>
         return listaProductos;
     }
 
-    public bool ModificarProducto(int id, string Descripcion)
+    public bool ModificarProducto(int id, string Descripcion, double Precio)
     {
         using (SqliteConnection connection = new SqliteConnection(cadenaConexion))
         {
-            var queryString = "UPDATE Productos SET Descripcion = @Descripcion WHERE idProducto = @id;";
+            var queryString = "UPDATE Productos SET Descripcion = @Descripcion, Precio = @Precio WHERE idProducto = @id;";
             SqliteCommand command = new SqliteCommand(queryString, connection);
             connection.Open();
             command.Parameters.Add(new SqliteParameter("@id", id));
             command.Parameters.Add(new SqliteParameter("@Descripcion", Descripcion));
+            command.Parameters.Add(new SqliteParameter("@Precio", Precio));
 
             if (command.ExecuteNonQuery() == 0)
             {

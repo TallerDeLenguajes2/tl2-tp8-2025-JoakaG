@@ -1,18 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 public class AgregarProductoViewModel
 {
-    public int IdPresupuesto{get; set;}
-    public List<Producto> Productos {get; set;}
-    public Producto Producto {get; set;}
-    public int Cantidad {get; set;}
-    public double MontoTotal {get; set;}
+    public int IdPresupuesto { get; set; }
 
-    public AgregarProductoViewModel(int IdPresupuesto, List<Producto> Productos, double MontoTotal, Producto Producto, int Cantidad)
+    public int IdProducto { get; set; }
+    public string Descripcion { get; set; }
+    [Required]
+    [Range(0.01, double.MaxValue, ErrorMessage = "La cantidad debe ser positiva")]
+    public int Cantidad { get; set; }
+
+    SelectList ProductosDisponibles;
+    public AgregarProductoViewModel(string Descripcion, int Id, int Cantidad, int IdProducto)
     {
-        this.IdPresupuesto = IdPresupuesto;
-        this.Productos = Productos;
-        this.MontoTotal = MontoTotal;
-        this.Producto = Producto;
+        IdPresupuesto = Id;
+        this.Descripcion = Descripcion;
+        this.IdProducto = IdProducto;
         this.Cantidad = Cantidad;
     }
-
 }
+
+
