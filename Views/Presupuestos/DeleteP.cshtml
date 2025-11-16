@@ -1,0 +1,12 @@
+@model BorrarProductoViewModel
+
+<main class="text-center">
+    <h1 class="display-4">Borrar Producto</h1>
+    <h4>¿Seguro que quieres eliminar el producto: @Model.Descripcion y precio $@Model.Precio? del Presupuesto Nro: @Model.IdPresupuesto </h4>
+    <form asp-action="DeletePC" method="post">
+        <input type="hidden" asp-for="IdPresupuesto" />
+        <input type="hidden" asp-for="IdProducto" />
+        <button type="submit" class="btn btn-danger">Borrar Producto</button>
+        <a asp-action="Details"  asp-route-id="@Model.IdPresupuesto" class="btn btn-secondary">Cancelar</a>
+    </form>
+</main>

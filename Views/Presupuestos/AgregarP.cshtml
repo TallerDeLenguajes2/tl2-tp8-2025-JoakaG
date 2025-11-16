@@ -1,21 +1,28 @@
-@model int
+@model AgregarProductoViewModel;
 
 <main class="text-center">
-    <h1>Agregar producto al presupuesto @Model</h1>
+    <h1>Agregar producto al presupuesto Nro @Model.IdPresupuesto</h1>
 
     <form asp-action="AgregarP" method="post">
-        <input type="hidden" name="idPresupuesto" value="@Model" />
+        <input type="hidden" asp-for="IdPresupuesto" />
         <div class="form-group">
-            <label>ID del producto</label>
-            <input name="idProducto" type="number" class="form-control" />
+            <label asp-for="IdProducto" class="control-label"></label>
+            <select asp-for="IdProducto" asp-items="@Model.ProductosDisponibles" class="form-control" >
+            <option value="">-- Seleccionar Producto --</option>
+            </select>
+            <span asp-validation-for="IdProducto" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label>Cantidad</label>
-            <input name="cantidad" type="number" class="form-control" />
+            <label asp-for="Cantidad" class="control-label">Cantidad</label>
+            <input asp-for="Cantidad" type="number" class="form-control" />
+            <span asp-validation-for="Cantidad" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Agregar</button>
-        <a asp-action="Details" asp-route-id="@Model" class="btn btn-secondary mt-3">Cancelar</a>
+        <a asp-action="Details" asp-route-id="@Model.IdPresupuesto" class="btn btn-secondary mt-3">Cancelar</a>
     </form>
 </main>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

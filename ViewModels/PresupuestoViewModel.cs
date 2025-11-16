@@ -16,6 +16,5 @@ public class PresupuestoViewModel
         this.IdPresupuesto = IdPresupuesto;
         this.NombreDestinatario = NombreDestinatario;
         this.FechaCreacion = FechaCreacion;
-
     }
 }

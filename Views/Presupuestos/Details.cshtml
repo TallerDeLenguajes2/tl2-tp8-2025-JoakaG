@@ -9,7 +9,8 @@
                 <th>Descripcion</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
-                <th><a asp-action="AgregarP" asp-controller="Presupuestos" asp-route-idPresupuesto="@Model.IdPresupuesto"  class="btn btn-success">+ Agregar</a></th> @* Preguntar lo de viewData...*@
+                <th><a asp-action="AgregarP" asp-controller="Presupuestos"
+                        asp-route-idPresupuesto="@Model.IdPresupuesto" class="btn btn-success">+ Agregar</a></th> @* Preguntar lo de viewData...*@
             </tr>
         </thead>
         <tbody>
@@ -21,7 +22,8 @@
                     <td>@d.Cantidad</td>
                     <td>@d.Producto.Precio</td>
                     <td>
-                        <a class="btn btn-danger">X</a>
+                        <a asp-action="DeleteP" asp-route-IdPresupuesto="@Model.IdPresupuesto" asp-route-IdProducto="@d.Producto.IdProducto"
+                            class="btn btn-danger">X</a>
                     </td>
                 </tr>
 
@@ -29,7 +31,7 @@
         </tbody>
     </table>
     <p><b>Total Presupuesto sin IVA: </b> $@Model.MontoPresupuesto()</p>
-     <p><b>Total Presupuesto con IVA: </b> $@Model.MontoPresupuestoConIva()</p>
+    <p><b>Total Presupuesto con IVA: </b> $@Model.MontoPresupuestoConIva()</p>
     <a asp-controller="Presupuestos" asp-action="index" class="btn btn-secondary">Volver</a>
 
 </main>

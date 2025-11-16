@@ -6,16 +6,17 @@ public class AgregarProductoViewModel
     public int IdPresupuesto { get; set; }
 
     public int IdProducto { get; set; }
-    public string Descripcion { get; set; }
+
     [Required]
     [Range(0.01, double.MaxValue, ErrorMessage = "La cantidad debe ser positiva")]
     public int Cantidad { get; set; }
+    public SelectList ProductosDisponibles;
 
-    SelectList ProductosDisponibles;
-    public AgregarProductoViewModel(string Descripcion, int Id, int Cantidad, int IdProducto)
+
+    public AgregarProductoViewModel(){}
+    public AgregarProductoViewModel(int IdPresupuesto, int Cantidad, int IdProducto)
     {
-        IdPresupuesto = Id;
-        this.Descripcion = Descripcion;
+        this.IdPresupuesto = IdPresupuesto;
         this.IdProducto = IdProducto;
         this.Cantidad = Cantidad;
     }

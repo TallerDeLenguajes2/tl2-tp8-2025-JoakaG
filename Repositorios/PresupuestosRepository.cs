@@ -130,13 +130,13 @@ public class PresupuestoRepository
 
     public bool EliminarProductoDetalle(int IdPresupuesto, int IdProducto)
     {
-        var queryString = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @id AND idProducto = @IdProducto;";
+        var queryString = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto;";
         using (SqliteConnection connection = new SqliteConnection(cadenaConexion))
         {
             connection.Open();
             SqliteCommand command = new SqliteCommand(queryString, connection);
             command.Parameters.AddWithValue("@idProducto", IdProducto);
-            command.Parameters.AddWithValue("@idPesupuesto", IdPresupuesto);
+            command.Parameters.AddWithValue("@idPresupuesto", IdPresupuesto);
             int exito = command.ExecuteNonQuery();
             connection.Close();
             return exito > 0;
