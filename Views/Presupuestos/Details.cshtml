@@ -5,7 +5,6 @@
     <table class="table table-sm table-bordered">
         <thead>
             <tr>
-                <th>ID Producto</th>
                 <th>Descripcion</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
@@ -17,7 +16,6 @@
             @foreach (var d in Model.Detalle)
             {
                 <tr>
-                    <td>@d.Producto.IdProducto </td>
                     <td>@d.Producto.Descripcion</td>
                     <td>@d.Cantidad</td>
                     <td>@d.Producto.Precio</td>
