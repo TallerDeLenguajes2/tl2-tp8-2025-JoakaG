@@ -69,16 +69,25 @@ public class PresupuestosController : Controller
         model.ProductosDisponibles = new SelectList(productosDispo, "IdProducto", "Descripcion");
         return View(model);
     }
-
+    // mas prolijo directamente no mostrar los productos que ya fueron agregados...
     [HttpPost]
     public IActionResult AgregarP(AgregarProductoViewModel vwm)
     {
+        var productosDispo = productoRepository.Listar();
+        vwm.ProductosDisponibles = new SelectList(productosDispo, "IdProducto", "Descripcion");
         if (!ModelState.IsValid)
         {
-            var productosDispo = productoRepository.Listar();
-            vwm.ProductosDisponibles = new SelectList(productosDispo, "IdProducto", "Descripcion");
             return View(vwm);
         }
+        if (presupuestoRepository.ObtenerDetalle(vwm.IdPresupuesto).Any(x => x.Producto.IdProducto == vwm.IdProducto))
+        {
+            ModelState.AddModelError("IdProducto", "El producto ya fue agregado al presupuesto Anteriormente");
+            var model = new AgregarProductoViewModel();
+            model.IdPresupuesto = vwm.IdPresupuesto;
+            model.ProductosDisponibles = new SelectList(productosDispo, "IdProducto", "Descripcion");
+            return View(model);
+        }
+
         presupuestoRepository.agregarProductoAPresupuesto(vwm.IdPresupuesto, vwm.IdProducto, vwm.Cantidad);
         return RedirectToAction(nameof(Details), new { id = vwm.IdPresupuesto });
     }
