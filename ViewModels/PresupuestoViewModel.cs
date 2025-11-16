@@ -7,7 +7,6 @@ public class PresupuestoViewModel
     [Required]
     public string NombreDestinatario { get; set; }
     [Required]
-    // falta validacion que no sea fecha futura
     public DateTime FechaCreacion { get; set; }
     public PresupuestoViewModel(){}
 

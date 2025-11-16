@@ -43,10 +43,19 @@ public class PresupuestosController : Controller
     [HttpPost]
     public IActionResult Create(PresupuestoViewModel vwm)
     {
+        if (vwm.FechaCreacion.Date > DateTime.Today.Date)
+        {
+            ModelState.AddModelError("FechaCreacion", "La fecha no puede ser futura.");
+            return View(vwm);
+        }
+        if (!ModelState.IsValid)
+        {
+            return View(vwm);
+        }
+
         var presupuesto = new Presupuesto();
         presupuesto.IdPresupuesto = vwm.IdPresupuesto;
         presupuesto.NombreDestinatario = vwm.NombreDestinatario;
-        //VALIDAR FECHA
         presupuesto.FechaCreacion = vwm.FechaCreacion;
         presupuestoRepository.Crear(presupuesto);
         return RedirectToAction("index");
@@ -70,8 +79,8 @@ public class PresupuestosController : Controller
             vwm.ProductosDisponibles = new SelectList(productosDispo, "IdProducto", "Descripcion");
             return View(vwm);
         }
-            presupuestoRepository.agregarProductoAPresupuesto(vwm.IdPresupuesto, vwm.IdProducto, vwm.Cantidad);
-            return RedirectToAction(nameof(Details), new { id = vwm.IdPresupuesto });
+        presupuestoRepository.agregarProductoAPresupuesto(vwm.IdPresupuesto, vwm.IdProducto, vwm.Cantidad);
+        return RedirectToAction(nameof(Details), new { id = vwm.IdPresupuesto });
     }
     [HttpGet]
     public IActionResult Delete(int IdPresupuesto)
@@ -85,8 +94,8 @@ public class PresupuestosController : Controller
         return RedirectToAction("index");
     }
 
-         public IActionResult DeleteP(int IdPresupuesto, int IdProducto)
-     {
+    public IActionResult DeleteP(int IdPresupuesto, int IdProducto)
+    {
         var producto = productoRepository.ObtenerDetalle(IdProducto);
         if (IdProducto != producto.IdProducto) return NotFound();
         var model = new BorrarProductoViewModel();
@@ -95,13 +104,13 @@ public class PresupuestosController : Controller
         model.Descripcion = producto.Descripcion;
         model.Precio = producto.Precio;
 
-         return View(model);
-     }
-     [HttpPost]
-     public IActionResult DeletePC(int IdPresupuesto, int IdProducto)
-     {
-         presupuestoRepository.EliminarProductoDetalle(IdPresupuesto, IdProducto);
-         return RedirectToAction(nameof(Details), new { id = IdPresupuesto });
-     }
+        return View(model);
+    }
+    [HttpPost]
+    public IActionResult DeletePC(int IdPresupuesto, int IdProducto)
+    {
+        presupuestoRepository.EliminarProductoDetalle(IdPresupuesto, IdProducto);
+        return RedirectToAction(nameof(Details), new { id = IdPresupuesto });
+    }
 
 }
