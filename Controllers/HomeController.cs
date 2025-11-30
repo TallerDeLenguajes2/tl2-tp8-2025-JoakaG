@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp8_2025_JoakaG.Models;
 
+
 namespace tl2_tp8_2025_JoakaG.Controllers;
 
 public class HomeController : Controller

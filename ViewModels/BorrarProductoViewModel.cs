@@ -1,3 +1,4 @@
+
 public class BorrarProductoViewModel
 {
     public int IdPresupuesto { get; set; }

@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 public class AgregarProductoViewModel
 {
     public int IdPresupuesto { get; set; }

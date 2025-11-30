@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-
 public class ProductoViewModel
 {
     public int IdProducto { get; set; }

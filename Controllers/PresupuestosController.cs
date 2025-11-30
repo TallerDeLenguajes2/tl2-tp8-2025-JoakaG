@@ -1,24 +1,52 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MVC.Services;
+using MVC.Interfaces;
 using tl2_tp8_2025_JoakaG.Models;
 
 public class PresupuestosController : Controller
 {
 
-    private readonly PresupuestoRepository presupuestoRepository;
+    private readonly IPresupuestoRepository presupuestoRepository;
+    private readonly IAuthenticationServices _authService;
 
-    private readonly ProductoRepository productoRepository = new ProductoRepository();
+    private readonly IProductoRepository productoRepository;
 
-    public PresupuestosController()
+    public PresupuestosController(IPresupuestoRepository presupuestoRepository, IAuthenticationServices authService, IProductoRepository productoRepository)
     {
-        presupuestoRepository = new PresupuestoRepository();
-        productoRepository = new ProductoRepository();
+        this.presupuestoRepository = presupuestoRepository;
+        this.productoRepository = productoRepository;
+        _authService = authService;
     }
 
     public IActionResult Index()
     {
+        if (!_authService.IsAuthenticated() || (!_authService.HasAccessLevel("Administrador") && !_authService.HasAccessLevel("Cliente")))
+        {
+                return RedirectToAction("Index", "Login");
+        }
         return View(presupuestoRepository.Listar());
     }
+    private IActionResult CheckAdminPermissions()
+    {
+        // 1. No logueado? -> vuelve al login
+        if (!_authService.IsAuthenticated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+
+        // 2. No es Administrador? -> Da Error
+        if (!_authService.HasAccessLevel("Administrador"))
+        {
+            // Llamamos a AccesoDenegado (llama a la vista correspondiente de Productos)
+            return RedirectToAction(nameof(AccesoDenegado));
+        }
+        return null; // Permiso concedido
+    }
+
+
+
 
     public IActionResult Details(int id)
     {
@@ -36,6 +64,8 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         return View();
     }
 
@@ -43,6 +73,8 @@ public class PresupuestosController : Controller
     [HttpPost]
     public IActionResult Create(PresupuestoViewModel vwm)
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         if (vwm.FechaCreacion.Date > DateTime.Today.Date)
         {
             ModelState.AddModelError("FechaCreacion", "La fecha no puede ser futura.");
@@ -63,6 +95,8 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult AgregarP(int idPresupuesto)
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         var productosDispo = productoRepository.Listar();
         var model = new AgregarProductoViewModel();
         model.IdPresupuesto = idPresupuesto;
@@ -73,6 +107,8 @@ public class PresupuestosController : Controller
     [HttpPost]
     public IActionResult AgregarP(AgregarProductoViewModel vwm)
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         var productosDispo = productoRepository.Listar();
         vwm.ProductosDisponibles = new SelectList(productosDispo, "IdProducto", "Descripcion");
         if (!ModelState.IsValid)
@@ -94,17 +130,23 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult Delete(int IdPresupuesto)
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         return View(IdPresupuesto);
     }
     [HttpPost]
     public IActionResult DeleteC(int IdPresupuesto)
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         presupuestoRepository.Eliminar(IdPresupuesto);
         return RedirectToAction("index");
     }
 
     public IActionResult DeleteP(int IdPresupuesto, int IdProducto)
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         var producto = productoRepository.ObtenerDetalle(IdProducto);
         if (IdProducto != producto.IdProducto) return NotFound();
         var model = new BorrarProductoViewModel();
@@ -118,8 +160,15 @@ public class PresupuestosController : Controller
     [HttpPost]
     public IActionResult DeletePC(int IdPresupuesto, int IdProducto)
     {
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
         presupuestoRepository.EliminarProductoDetalle(IdPresupuesto, IdProducto);
         return RedirectToAction(nameof(Details), new { id = IdPresupuesto });
+    }
+
+    public IActionResult AccesoDenegado()
+    {
+        return View();
     }
 
 }

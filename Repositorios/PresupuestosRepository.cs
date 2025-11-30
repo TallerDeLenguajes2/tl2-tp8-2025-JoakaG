@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-public class PresupuestoRepository
+public class PresupuestoRepository : IPresupuestoRepository
 {
 
     private string cadenaConexion = "Data Source=Tienda_final.db;";

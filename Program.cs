@@ -1,10 +1,24 @@
+using MVC.Interfaces;
+using MVC.Repositorios;
+using MVC.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession(options =>
+{ options.IdleTimeout = TimeSpan.FromMinutes(30); // Tiempo de expiración de la sesión
+options.Cookie.HttpOnly = true; // Solo accesible desde HTTP, no JavaScript
+options.Cookie.IsEssential = true; // Necesario incluso si el usuario no acepta cookies
+});
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+builder.Services.AddScoped<IPresupuestoRepository,PresupuestoRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IAuthenticationServices, AuthenticationServices>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -15,9 +29,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
