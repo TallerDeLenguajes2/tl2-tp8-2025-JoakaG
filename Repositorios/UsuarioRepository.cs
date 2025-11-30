@@ -7,7 +7,7 @@ public class UsuarioRepository : IUsuarioRepository
     private string CadenaConexion = "Data Source=Tienda_final.db;";
     public Usuario? GetUser(string usuario, string contrasena)
     {
-        Usuario user = null;
+        Usuario ?user = null;
         //Consulta SQL que busca por Usuario Y Contrasena
         const string sql = @"SELECT Id, Nombre, User, Pass, Rol FROM Usuarios WHERE User = @Usuario AND Pass = @Contrasena";
         using var conexion = new SqliteConnection(CadenaConexion);

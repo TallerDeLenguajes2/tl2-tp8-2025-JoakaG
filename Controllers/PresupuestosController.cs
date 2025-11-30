@@ -118,10 +118,7 @@ public class PresupuestosController : Controller
         if (presupuestoRepository.ObtenerDetalle(vwm.IdPresupuesto).Any(x => x.Producto.IdProducto == vwm.IdProducto))
         {
             ModelState.AddModelError("IdProducto", "El producto ya fue agregado al presupuesto Anteriormente");
-            var model = new AgregarProductoViewModel();
-            model.IdPresupuesto = vwm.IdPresupuesto;
-            model.ProductosDisponibles = new SelectList(productosDispo, "IdProducto", "Descripcion");
-            return View(model);
+            return View(vwm);
         }
 
         presupuestoRepository.agregarProductoAPresupuesto(vwm.IdPresupuesto, vwm.IdProducto, vwm.Cantidad);
